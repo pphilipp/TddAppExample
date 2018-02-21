@@ -1,0 +1,3 @@
+id=milk
+title=Milk
+Put glass under tap. Open tap. Close
