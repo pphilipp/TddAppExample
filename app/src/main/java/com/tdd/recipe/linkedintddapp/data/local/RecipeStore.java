@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeStore {
     public final List<Recipe> recipes = new ArrayList<>();
+    private final Map<String, Recipe> map = new HashMap<>();
 
     public RecipeStore(Context context, String derictory) {
         List<InputStream> streams = getAssetStream(context.getAssets(), derictory);
@@ -21,8 +24,10 @@ public class RecipeStore {
         for (InputStream stream : streams) {
             Recipe recipe = Recipe.readFromStream(stream);
 
-            if (recipe != null)
+            if (recipe != null) {
                 recipes.add(recipe);
+                map.put(recipe.id, recipe);
+            }
         }
     }
 
@@ -44,7 +49,6 @@ public class RecipeStore {
         return streams;
     }
 
-
     public static String[] getFileNames(AssetManager manager, String directory) {
         if (directory == null)
             return new String[0];
@@ -54,5 +58,10 @@ public class RecipeStore {
         } catch (IOException e) {
             return new String[0];
         }
+    }
+
+    public Recipe getRecipe(String id) {
+
+        return map.get(id);
     }
 }
