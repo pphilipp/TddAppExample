@@ -4,13 +4,14 @@ package com.tdd.recipe.linkedintddapp.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPreferencesFavorites {
+public class SharedPreferencesFavorites implements Favorites{
     private final SharedPreferences preferences;
 
     public SharedPreferencesFavorites(Context context) {
         preferences = context.getSharedPreferences("favorites.xml", Context.MODE_PRIVATE);
     }
 
+    @Override
     public boolean get(String id) {
         return preferences.getBoolean(id, false);
     }
@@ -24,6 +25,7 @@ public class SharedPreferencesFavorites {
         editor.apply();
     }
 
+    @Override
     public boolean toggle(String id) {
         boolean favorite = get(id);
         put(id, !favorite);
