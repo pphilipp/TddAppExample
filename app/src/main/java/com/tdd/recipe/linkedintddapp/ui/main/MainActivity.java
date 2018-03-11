@@ -1,4 +1,4 @@
-package ui.main;
+package com.tdd.recipe.linkedintddapp.ui.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ui.adapter.RecipeAdapter;
+import com.tdd.recipe.linkedintddapp.ui.adapter.RecipeAdapter;
 
 public class MainActivity extends AppCompatActivity {
     public static final String DIR_RECIPES = "recipes";
