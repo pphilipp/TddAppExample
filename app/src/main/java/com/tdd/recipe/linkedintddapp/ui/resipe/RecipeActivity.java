@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tdd.recipe.linkedintddapp.R;
+import com.tdd.recipe.linkedintddapp.data.local.Favorites;
 import com.tdd.recipe.linkedintddapp.data.local.RecipeStore;
 import com.tdd.recipe.linkedintddapp.data.local.SharedPreferencesFavorites;
 import com.tdd.recipe.linkedintddapp.data.model.Recipe;
+import com.tdd.recipe.linkedintddapp.injection.RecipeApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,8 +39,9 @@ public class RecipeActivity extends AppCompatActivity {
             tvDescription.setText(R.string.recipe_not_found);
             return;
         }
+        RecipeApplication application = (RecipeApplication) getApplication();
 
-        final SharedPreferencesFavorites preferences = new SharedPreferencesFavorites(this);
+        final Favorites preferences = application.getFavorites();
         boolean isFavorite = preferences.get(recipe.id);
 
         tvTitle.setText(recipe.title);
