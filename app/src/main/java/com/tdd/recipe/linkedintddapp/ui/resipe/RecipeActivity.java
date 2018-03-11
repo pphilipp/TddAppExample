@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.tdd.recipe.linkedintddapp.R;
 import com.tdd.recipe.linkedintddapp.data.local.RecipeStore;
+import com.tdd.recipe.linkedintddapp.data.local.SharedPreferencesFavorites;
 import com.tdd.recipe.linkedintddapp.data.model.Recipe;
 
 import butterknife.BindView;
@@ -29,7 +30,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         RecipeStore store = new RecipeStore(this,"recipes");
         String id = getIntent().getStringExtra(EXTRA_ID);
-        Recipe recipe = store.getRecipe(id);
+        final Recipe recipe = store.getRecipe(id);
 
 
         if (recipe == null) {
@@ -38,7 +39,19 @@ public class RecipeActivity extends AppCompatActivity {
             return;
         }
 
+        final SharedPreferencesFavorites preferences = new SharedPreferencesFavorites(this);
+        boolean isFavorite = preferences.get(recipe.id);
+
         tvTitle.setText(recipe.title);
+        tvTitle.setSelected(isFavorite);
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result = preferences.toggle(recipe.id);
+                tvTitle.setSelected(result);
+            }
+        });
+
         tvDescription.setText(recipe.description);
     }
 }
