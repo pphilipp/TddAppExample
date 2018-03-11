@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">LinkedinTddApp</string>
-    <string name="not_found">recipe not found</string>
+    <string name="recipe_not_found">recipe not found</string>
 </resources>

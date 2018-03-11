@@ -2,7 +2,6 @@ package com.tdd.recipe.linkedintddapp.ui.resipe;
 
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -35,7 +34,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         if (recipe == null) {
             tvTitle.setVisibility(View.GONE);
-            tvDescription.setText(R.string.not_found);
+            tvDescription.setText(R.string.recipe_not_found);
             return;
         }
 
