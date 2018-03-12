@@ -17,7 +17,7 @@ import com.tdd.recipe.linkedintddapp.injection.RecipeApplication;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity implements RecipeContract.View {
     public static final String EXTRA_ID = "id";
 
     @BindView(R.id.tv_title) TextView tvTitle;
@@ -33,31 +33,42 @@ public class RecipeActivity extends AppCompatActivity {
         // Step 2: Load recipe from store
         RecipeStore store = new RecipeStore(this,"recipes");
         String id = getIntent().getStringExtra(EXTRA_ID);
-        final Recipe recipe = store.getRecipe(id);
-
-        // Step 3: If recipe is null, show error
-        if (recipe == null) {
-            tvTitle.setVisibility(View.GONE);
-            tvDescription.setText(R.string.recipe_not_found);
-            return;
-        }
-
-        // Step 4: if recipe is not null, show recipe
         RecipeApplication application = (RecipeApplication) getApplication();
-        final Favorites preferences = application.getFavorites();
-        boolean isFavorite = preferences.get(recipe.id);
+        final Favorites favoritesPrefs = application.getFavorites();
+        final RecipePresenter presenter = new RecipePresenter(store, this, favoritesPrefs);
+        presenter.loadRecipe(id);
 
-        tvTitle.setText(recipe.title);
-        tvTitle.setSelected(isFavorite);
-        tvDescription.setText(recipe.description);
+        // Step 3: If recipe is null, show error - DONE in the presenter
+
+        // Step 4: if recipe is not null, show recipe - DONE in the presenter
 
         // Step 5: When title is clicked, toggle the favorites
         tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = preferences.toggle(recipe.id);
-                tvTitle.setSelected(result);
+                presenter.toggleFavorite();
             }
         });
+    }
+
+    @Override
+    public void showRecipeNotFoundError() {
+        tvTitle.setVisibility(View.GONE);
+        tvDescription.setText(R.string.recipe_not_found);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        tvTitle.setText(title);
+    }
+
+    @Override
+    public void setDescription(String description) {
+        tvDescription.setText(description);
+    }
+
+    @Override
+    public void setFavorites(boolean isFavorites) {
+        tvTitle.setSelected(isFavorites);
     }
 }
