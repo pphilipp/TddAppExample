@@ -25,27 +25,33 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        // Step 1: Setup the UI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
 
+        // Step 2: Load recipe from store
         RecipeStore store = new RecipeStore(this,"recipes");
         String id = getIntent().getStringExtra(EXTRA_ID);
         final Recipe recipe = store.getRecipe(id);
 
-
+        // Step 3: If recipe is null, show error
         if (recipe == null) {
             tvTitle.setVisibility(View.GONE);
             tvDescription.setText(R.string.recipe_not_found);
             return;
         }
-        RecipeApplication application = (RecipeApplication) getApplication();
 
+        // Step 4: if recipe is not null, show recipe
+        RecipeApplication application = (RecipeApplication) getApplication();
         final Favorites preferences = application.getFavorites();
         boolean isFavorite = preferences.get(recipe.id);
 
         tvTitle.setText(recipe.title);
         tvTitle.setSelected(isFavorite);
+        tvDescription.setText(recipe.description);
+
+        // Step 5: When title is clicked, toggle the favorites
         tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +59,5 @@ public class RecipeActivity extends AppCompatActivity {
                 tvTitle.setSelected(result);
             }
         });
-
-        tvDescription.setText(recipe.description);
     }
 }
