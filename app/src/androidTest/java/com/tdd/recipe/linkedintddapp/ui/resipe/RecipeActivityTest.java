@@ -24,7 +24,6 @@ import static org.hamcrest.core.IsNot.not;
 
 
 public class RecipeActivityTest {
-    private InMemoryFavorites favorites;
     private final String TEST_ID_MILK = "milk";
     
     @Rule
@@ -32,13 +31,6 @@ public class RecipeActivityTest {
             RecipeActivity.class,
             true,
             false);
-
-    @Before
-    public void clearFavorites() {
-        TestRecipeApplication app = (TestRecipeApplication) InstrumentationRegistry.getTargetContext().getApplicationContext();
-        favorites = (InMemoryFavorites) app.getFavorites();
-        favorites.clear();
-    }
 
     @Test
     public void recipeNotFound() throws Exception {
@@ -62,14 +54,10 @@ public class RecipeActivityTest {
 
     @Test
     public void clickToAlreadyFavorite() throws Exception {
-        favorites.put(TEST_ID_MILK, true);
-        launchRecipe(TEST_ID_MILK);
-
-        onView(withId(R.id.tv_title))
-                .check(matches(withText("Milk")))
-                .check(matches(isSelected()))
-                .perform(click())
-                .check(matches(not(isSelected())));
+        new RecipeRobot()
+                .setFavorites(TEST_ID_MILK)
+                .launch(activityTestRule, TEST_ID_MILK)
+                .isFavorites();
     }
 
     private void launchRecipe(String id) {
