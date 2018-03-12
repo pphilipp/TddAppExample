@@ -10,8 +10,6 @@ import com.tdd.recipe.linkedintddapp.data.local.InMemoryFavorites;
 import com.tdd.recipe.linkedintddapp.injection.TestRecipeApplication;
 import com.tdd.recipe.linkedintddapp.ui.resipe.RecipeActivity;
 
-import org.junit.Before;
-
 public class RecipeRobot extends ScreenRobot<RecipeRobot> {
     private final InMemoryFavorites favorites;
 
@@ -37,7 +35,7 @@ public class RecipeRobot extends ScreenRobot<RecipeRobot> {
     }
 
     public RecipeRobot description(@StringRes int stringId) {
-        return chackViewHasText(R.id.tv_description, stringId);
+        return checkViewHasText(R.id.tv_description, stringId);
     }
 
     public RecipeRobot setFavorites(String id) {
@@ -47,5 +45,9 @@ public class RecipeRobot extends ScreenRobot<RecipeRobot> {
 
     public RecipeRobot isFavorites() {
         return checkIsSelected(R.id.tv_title);
+    }
+
+    public RecipeRobot isNotFavorites() {
+        return checkIsNotSelected(R.id.tv_title);
     }
 }

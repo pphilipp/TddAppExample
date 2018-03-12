@@ -42,14 +42,9 @@ public class RecipeActivityTest {
 
     @Test
     public void clickToFavorite() throws Exception {
-        launchRecipe(TEST_ID_MILK);
-
-        onView(withId(R.id.tv_title))
-                .check(matches(withText("Milk")))
-                .check(matches(not(isSelected())))
-                .perform(click())
-                .check(matches(isSelected()));
-
+        new RecipeRobot()
+                .launch(activityTestRule, TEST_ID_MILK)
+                .isNotFavorites();
     }
 
     @Test
@@ -58,11 +53,5 @@ public class RecipeActivityTest {
                 .setFavorites(TEST_ID_MILK)
                 .launch(activityTestRule, TEST_ID_MILK)
                 .isFavorites();
-    }
-
-    private void launchRecipe(String id) {
-        Intent intent = new Intent();
-        intent.putExtra(RecipeActivity.EXTRA_ID, id);
-        activityTestRule.launchActivity(intent);
     }
 }
